@@ -18,9 +18,9 @@ const About = () => {
                     <div className="p-10 glass-panel">
                         <h3 className="text-[2rem] mb-6 gradient-text">Mi Historia</h3>
                         <p className="text-text-secondary text-[1.05rem] mb-6 leading-[1.8]">
-                            Soy una Arquitecta de Software apasionada por el orden dentro del caos.
-                            Mi especialidad es domar el "desmadre" de los sistemas complejos mediante <strong>Arquitecturas de Microservicios</strong>
-                            y código fuertemente tipado con <strong>TypeScript</strong>.
+                            Soy una Desarrolladora de Software comprometida con la creación de soluciones innovadoras y eficientes.
+                            Mi especialidad radica en la <strong>gestión de la complejidad técnica</strong> en sistemas de gran escala mediante
+                            <strong>Arquitecturas de Microservicios</strong> robustas y el desarrollo de código escalable con <strong>TypeScript</strong>.
                         </p>
                         <p className="text-text-secondary text-[1.05rem] mb-6 leading-[1.8]">
                             Me encanta el desarrollo End-to-End: desde diseñar un clúster escalable y bases de datos distribuidas en el backend,
