@@ -4,7 +4,7 @@ import { usePortfolio } from '../context/PortfolioContext';
 import { FEATURES_DATA } from '../data/portfolio.data';
 
 const About = () => {
-    const { skills } = usePortfolio();
+    const { skills, heroContent } = usePortfolio();
 
     return (
         <section className="relative z-10 section-padding" id="about">
@@ -17,15 +17,14 @@ const About = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     <div className="p-10 glass-panel">
                         <h3 className="text-[2rem] mb-6 gradient-text">Mi Historia</h3>
-                        <p className="text-text-secondary text-[1.05rem] mb-6 leading-[1.8]">
-                            Soy una Desarrolladora de Software comprometida con la creación de soluciones innovadoras y eficientes.
-                            Mi especialidad radica en la <strong>gestión de la complejidad técnica</strong> en sistemas de gran escala mediante
-                            <strong>Arquitecturas de Microservicios</strong> robustas y el desarrollo de código escalable con <strong>TypeScript</strong>.
-                        </p>
-                        <p className="text-text-secondary text-[1.05rem] mb-6 leading-[1.8]">
-                            Me encanta el desarrollo End-to-End: desde diseñar un clúster escalable y bases de datos distribuidas en el backend,
-                            hasta construir una interfaz de usuario en React sumamente fluida y atractiva en el frontend.
-                        </p>
+                        <div
+                            className="text-text-secondary text-[1.05rem] mb-6 leading-[1.8] space-y-4"
+                            dangerouslySetInnerHTML={{
+                                __html: heroContent.history
+                                    ? heroContent.history.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br/>')
+                                    : 'Cargando historia...'
+                            }}
+                        />
 
                         <div className="mt-8">
                             <h4 className="mb-6 text-xl text-text-primary">Habilidades Técnicas</h4>

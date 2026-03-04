@@ -9,6 +9,7 @@ export interface IHeroContent {
     subtitle: string;
     badge: string;
     description: string;
+    history?: string;
 }
 
 interface PortfolioContextType {
@@ -40,7 +41,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
         features: IFeature[];
         projects: IProject[];
     }>({
-        heroContent: HERO_CONTENT,
+        heroContent: { ...HERO_CONTENT, history: '' },
         heroStats: HERO_STATS,
         skills: SKILLS_DATA,
         features: FEATURES_DATA,
@@ -88,7 +89,8 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                         title: profileData.name,
                         subtitle: profileData.role,
                         badge: 'Open to work',
-                        description: profileData.description
+                        description: profileData.description,
+                        history: profileData.history || ''
                     };
                 }
 
@@ -116,7 +118,8 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                 const { error } = await supabase.from('profile').update({
                     name: content.title,
                     role: content.subtitle,
-                    description: content.description
+                    description: content.description,
+                    history: content.history
                 }).eq('id', content.id);
                 if (error) throw error;
             } else {
@@ -124,7 +127,8 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                 const { error } = await supabase.from('profile').insert([{
                     name: content.title,
                     role: content.subtitle,
-                    description: content.description
+                    description: content.description,
+                    history: content.history
                 }]);
                 if (error) throw error;
             }

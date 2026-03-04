@@ -10,6 +10,7 @@ const AdminHero = () => {
     const [subtitle, setSubtitle] = useState(heroContent.subtitle);
     const [badge, setBadge] = useState(heroContent.badge);
     const [description, setDescription] = useState(heroContent.description);
+    const [history, setHistory] = useState(heroContent.history || '');
 
     const [isSaving, setIsSaving] = useState(false);
 
@@ -18,22 +19,24 @@ const AdminHero = () => {
         setIsSaving(true);
 
         updateHeroContent({
+            ...heroContent,
             title,
             subtitle,
             badge,
-            description
+            description,
+            history
         });
 
         // Simulating artificial delay for UI feedback
         setTimeout(() => {
             setIsSaving(false);
-            alert('¡Sección Hero actualizada con éxito!');
+            alert('¡Sección Hero y Mi Historia actualizadas con éxito!');
         }, 600);
     };
 
     return (
         <div className="glass-panel p-8 animate-fade-in">
-            <h2 className="text-2xl font-heading font-semibold text-text-primary mb-6">Editar Sección Principal (Hero)</h2>
+            <h2 className="text-2xl font-heading font-semibold text-text-primary mb-6">Editar Sección Principal e Historia</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <AdminInput
@@ -60,11 +63,20 @@ const AdminHero = () => {
                 />
 
                 <AdminTextarea
-                    label="Descripción Biográfica (Usa **texto** para negritas)"
+                    label="Descripción Corta (Hero)"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     required
-                    rows={4}
+                    rows={3}
+                />
+
+                <AdminTextarea
+                    label="Mi Historia (Sección About)"
+                    value={history}
+                    onChange={(e) => setHistory(e.target.value)}
+                    required
+                    rows={8}
+                    placeholder="Aquí puedes escribir tu biografía detallada..."
                 />
 
                 <div className="pt-4 flex justify-end">
