@@ -1,4 +1,4 @@
-import { ArrowRight, Download } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
 
 const Hero = () => {
@@ -28,10 +28,10 @@ const Hero = () => {
 
                     <div className="flex flex-wrap justify-center gap-4 mb-16">
                         <a href="#projects" className="btn btn-primary">
-                            Ver Arquitectura <ArrowRight size={20} />
+                            Ver Proyectos <ArrowRight size={20} />
                         </a>
-                        <a href="#" className="btn btn-secondary">
-                            Descargar CV <Download size={20} />
+                        <a href={heroContent.whatsapp ? `https://wa.me/${heroContent.whatsapp.startsWith('+') ? heroContent.whatsapp.replace(/\+/g, '') : '57' + heroContent.whatsapp}` : "#"} target="_blank" rel="noreferrer" className="btn btn-secondary">
+                            Comunícate aquí <ArrowRight size={20} className="rotate-[-45deg]" />
                         </a>
                     </div>
 

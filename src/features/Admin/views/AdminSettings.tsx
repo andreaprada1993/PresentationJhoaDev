@@ -1,7 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { AdminInput } from '../components/FormElements';
-import { Save, Lock, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Save, Lock, ShieldCheck, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AdminSettings = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -49,7 +50,11 @@ const AdminSettings = () => {
     };
 
     return (
-        <div className="animate-fade-in space-y-8">
+        <div className="animate-fade-in space-y-6">
+            <Link to="/admin/dashboard" className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-primary transition-colors">
+                <ArrowLeft size={18} /> Regresar al Dashboard
+            </Link>
+
             <header className="flex justify-between items-center bg-bg-secondary p-6 rounded-2xl border border-glass-border">
                 <div>
                     <h1 className="text-3xl font-heading font-bold text-text-primary">Configuración</h1>

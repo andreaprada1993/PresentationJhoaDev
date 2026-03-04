@@ -2,7 +2,8 @@ import { useState, FormEvent } from 'react';
 import { usePortfolio } from '../../../context/PortfolioContext';
 import { ISkill } from '../../../types';
 import { AdminInput } from '../components/FormElements';
-import { Save, Plus, Trash2, Edit2, X } from 'lucide-react';
+import { Save, Plus, Trash2, Edit2, X, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AdminSkills = () => {
     const { skills, addSkill, updateSkill, deleteSkill } = usePortfolio();
@@ -107,6 +108,10 @@ const AdminSkills = () => {
 
     return (
         <div className="space-y-6 animate-fade-in">
+            <Link to="/admin/dashboard" className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-primary transition-colors">
+                <ArrowLeft size={18} /> Regresar al Dashboard
+            </Link>
+
             <div className="flex justify-between items-center bg-bg-secondary p-6 rounded-2xl border border-glass-border">
                 <h2 className="text-2xl font-heading font-semibold text-text-primary">Gestión de Habilidades</h2>
                 <button onClick={() => openEditForm(null)} className="btn btn-primary flex items-center gap-2 py-2">

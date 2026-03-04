@@ -5,7 +5,7 @@ export const HERO_CONTENT = {
     title: 'Andrea Prada',
     subtitle: 'Desarrolladora Full Stack Jr',
     badge: 'Disponible para nuevas oportunidades',
-    description: 'Especialista en construir aplicaciones robustas con **TypeScript** y arquitecturas escalables basadas en **Microservicios**. Me apasiona resolver problemas complejos (ese "desmadre" del backend) y crear experiencias fluidas y tipadas de principio a fin.',
+    description: 'Especialista en construir aplicaciones robustas con **TypeScript** y proyectos escalables. Me apasiona resolver problemas complejos y crear experiencias fluidas de principio a fin.',
 };
 
 export const HERO_STATS: IHeroStats[] = [
@@ -20,7 +20,7 @@ export const HERO_STATS: IHeroStats[] = [
 ];
 
 export const SKILLS_DATA: ISkill[] = [
-    { name: 'Arquitectura de Microservicios', level: 95 },
+    { name: 'Gestión de Proyectos', level: 95 },
     { name: 'TypeScript / Ecosistema TS', level: 95 },
     { name: 'React / Next.js', level: 85 },
     { name: 'Node.js / Express / NestJS', level: 90 },
@@ -31,8 +31,8 @@ export const SKILLS_DATA: ISkill[] = [
 export const FEATURES_DATA: IFeature[] = [
     {
         icon: <Server size={24} />,
-        title: 'Arquitectura de Microservicios',
-        description: 'Diseño e implementación de sistemas distribuidos, manejando la complejidad del backend con elegancia y escalabilidad.'
+        title: 'Gestión de Proyectos',
+        description: 'Diseño e implementación de sistemas distribuidos, manejando la complejidad con elegancia y escalabilidad.'
     },
     {
         icon: <Code2 size={24} />,
