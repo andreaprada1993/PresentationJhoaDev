@@ -1,9 +1,10 @@
 
 
 import { usePortfolio } from '../context/PortfolioContext';
+import { FEATURES_DATA } from '../data/portfolio.data';
 
 const About = () => {
-    const { skills, features } = usePortfolio();
+    const { skills } = usePortfolio();
 
     return (
         <section className="relative z-10 section-padding" id="about">
@@ -48,7 +49,7 @@ const About = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {features.map((feature, idx) => (
+                        {FEATURES_DATA.map((feature, idx) => (
                             <div key={idx} className="p-8 glass-panel">
                                 <div className="w-[50px] h-[50px] rounded-xl bg-indigo-500/10 text-accent-primary flex items-center justify-center mb-6">
                                     {feature.icon}
