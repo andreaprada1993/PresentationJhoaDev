@@ -1,32 +1,8 @@
 import { ExternalLink, Github } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 const Projects = () => {
-    const projects = [
-        {
-            title: 'E-Commerce Platform',
-            description: 'Una plataforma de comercio electrónico completa con carrito de compras, pagos integrados y panel de administración.',
-            image: 'https://images.unsplash.com/photo-1557821552-1710517f67cc?q=80&w=1000&auto=format&fit=crop',
-            tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-            liveUrl: '#',
-            githubUrl: '#'
-        },
-        {
-            title: 'Task Management App',
-            description: 'Aplicación para gestión de proyectos y tareas con tableros Kanban, tiempo real y colaboración en equipo.',
-            image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=1000&auto=format&fit=crop',
-            tags: ['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL'],
-            liveUrl: '#',
-            githubUrl: '#'
-        },
-        {
-            title: 'AI Image Generator',
-            description: 'Generador de imágenes impulsado por IA que permite a los usuarios crear obras de arte a partir de texto.',
-            image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000&auto=format&fit=crop',
-            tags: ['React', 'OpenAI API', 'Tailwind', 'Express'],
-            liveUrl: '#',
-            githubUrl: '#'
-        }
-    ];
+    const { projects } = usePortfolio();
 
     return (
         <section className="relative z-10 section-padding" id="projects">

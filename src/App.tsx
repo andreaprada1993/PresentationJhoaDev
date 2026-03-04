@@ -7,9 +7,12 @@ import Game from './components/Game';
 
 // Admin Components
 import { AuthProvider } from './context/AuthContext';
+import { PortfolioProvider } from './context/PortfolioContext';
 import { AdminLayout, ProtectedRoute } from './layout/AdminLayout';
 import Login from './features/Admin/Login';
 import Dashboard from './features/Admin/Dashboard';
+import AdminHero from './features/Admin/views/AdminHero';
+import AdminProjects from './features/Admin/views/AdminProjects';
 
 // Public Page
 const PublicPage = () => (
@@ -24,29 +27,33 @@ const PublicPage = () => (
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public Website */}
-          <Route path="/" element={<PublicPage />} />
+      <PortfolioProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public Website */}
+            <Route path="/" element={<PublicPage />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<Login />} />
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute>
-                <AdminLayout>
-                  <Routes>
-                    <Route path="dashboard" element={<Dashboard />} />
-                    {/* Add more admin routes here like /admin/projects */}
-                    <Route path="" element={<Dashboard />} />
-                  </Routes>
-                </AdminLayout>
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<Login />} />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute>
+                  <AdminLayout>
+                    <Routes>
+                      <Route path="dashboard" element={<Dashboard />} />
+                      <Route path="hero" element={<AdminHero />} />
+                      <Route path="projects" element={<AdminProjects />} />
+                      {/* Add more admin routes here like /admin/projects */}
+                      <Route path="" element={<Dashboard />} />
+                    </Routes>
+                  </AdminLayout>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </PortfolioProvider>
     </AuthProvider>
   );
 }

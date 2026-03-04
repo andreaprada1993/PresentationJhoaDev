@@ -1,32 +1,9 @@
-import { Code2, Server, Database } from 'lucide-react';
+
+
+import { usePortfolio } from '../context/PortfolioContext';
 
 const About = () => {
-    const skills = [
-        { name: 'Arquitectura de Microservicios', level: 95 },
-        { name: 'TypeScript / Ecosistema TS', level: 95 },
-        { name: 'React / Next.js', level: 85 },
-        { name: 'Node.js / Express / NestJS', level: 90 },
-        { name: 'Docker / Kubernetes', level: 85 },
-        { name: 'Bases de Datos (SQL/NoSQL)', level: 85 }
-    ];
-
-    const features = [
-        {
-            icon: <Server size={24} />,
-            title: 'Arquitectura de Microservicios',
-            description: 'Diseño e implementación de sistemas distribuidos, manejando la complejidad del backend con elegancia y escalabilidad.'
-        },
-        {
-            icon: <Code2 size={24} />,
-            title: 'TypeScript Avanzado',
-            description: 'Desarrollo fuertemente tipado para aplicaciones fluidas, seguras y libres de errores en tiempo de ejecución.'
-        },
-        {
-            icon: <Database size={24} />,
-            title: 'Bases de Datos',
-            description: 'Modelado y optimización de datos para aplicaciones de alto rendimiento.'
-        }
-    ];
+    const { skills, features } = usePortfolio();
 
     return (
         <section className="relative z-10 section-padding" id="about">

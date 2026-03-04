@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Dashboard = () => {
     return (
         <div className="animate-fade-in space-y-8">
@@ -12,7 +14,7 @@ const Dashboard = () => {
                 <div className="glass-panel p-6">
                     <h3 className="text-xl font-heading font-semibold mb-2 text-text-primary">Proyectos</h3>
                     <p className="text-text-secondary mb-4">Gestiona los proyectos que aparecen en tu portafolio.</p>
-                    <button className="btn btn-primary w-full justify-center">Editar Proyectos</button>
+                    <Link to="/admin/projects" className="btn btn-primary w-full justify-center">Editar Proyectos</Link>
                 </div>
                 <div className="glass-panel p-6">
                     <h3 className="text-xl font-heading font-semibold mb-2 text-text-primary">Habilidades</h3>
@@ -20,9 +22,9 @@ const Dashboard = () => {
                     <button className="btn btn-secondary w-full justify-center">Editar Habilidades</button>
                 </div>
                 <div className="glass-panel p-6">
-                    <h3 className="text-xl font-heading font-semibold mb-2 text-text-primary">Perfil</h3>
-                    <p className="text-text-secondary mb-4">Edita tu bio, enlaces sociales y más.</p>
-                    <button className="btn btn-secondary w-full justify-center">Editar Perfil</button>
+                    <h3 className="text-xl font-heading font-semibold mb-2 text-text-primary">Perfil & Hero</h3>
+                    <p className="text-text-secondary mb-4">Edita tu bio, enlaces sociales y encabezado.</p>
+                    <Link to="/admin/hero" className="btn btn-secondary w-full justify-center">Editar Perfil</Link>
                 </div>
             </div>
         </div>
