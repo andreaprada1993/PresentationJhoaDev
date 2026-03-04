@@ -10,8 +10,9 @@ const Login = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Super simple mock auth
-        if (password === 'admin123') {
+        const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123';
+
+        if (password === adminPassword) {
             login();
             navigate('/admin/dashboard');
         } else {
