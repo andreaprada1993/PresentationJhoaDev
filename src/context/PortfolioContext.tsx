@@ -10,6 +10,8 @@ export interface IHeroContent {
     badge: string;
     description: string;
     history?: string;
+    linkedin?: string;
+    whatsapp?: string;
 }
 
 interface PortfolioContextType {
@@ -28,7 +30,9 @@ interface PortfolioContextType {
     updateProject: (index: number, project: IProject) => Promise<void>;
     deleteProject: (index: number) => Promise<void>;
     // Actions - Skills
+    addSkill: (skill: ISkill) => Promise<void>;
     updateSkill: (index: number, skill: ISkill) => Promise<void>;
+    deleteSkill: (index: number) => Promise<void>;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
@@ -90,7 +94,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                         subtitle: profileData.role,
                         badge: 'Open to work',
                         description: profileData.description,
-                        history: profileData.history || ''
+                        history: profileData.history || '',
+                        linkedin: profileData.linkedin || '',
+                        whatsapp: profileData.whatsapp || ''
                     };
                 }
 
@@ -119,7 +125,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                     name: content.title,
                     role: content.subtitle,
                     description: content.description,
-                    history: content.history
+                    history: content.history,
+                    linkedin: content.linkedin,
+                    whatsapp: content.whatsapp
                 }).eq('id', content.id);
                 if (error) throw error;
             } else {
@@ -128,7 +136,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                     name: content.title,
                     role: content.subtitle,
                     description: content.description,
-                    history: content.history
+                    history: content.history,
+                    linkedin: content.linkedin,
+                    whatsapp: content.whatsapp
                 }]);
                 if (error) throw error;
             }
@@ -209,12 +219,50 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const addSkill = async (skill: ISkill) => {
+        try {
+            const { error } = await supabase.from('skills').insert([{
+                name: skill.name,
+                category: String(skill.level)
+            }]);
+            if (error) throw error;
+            await fetchData();
+        } catch (e) {
+            console.error("Error adding skill", e);
+            alert("Error al guardar la habilidad");
+        }
+    };
+
     const updateSkill = async (index: number, updatedSkill: ISkill) => {
-        setState(prev => {
-            const newSkills = [...prev.skills];
-            newSkills[index] = updatedSkill;
-            return { ...prev, skills: newSkills };
-        });
+        try {
+            const skillToUpdate = state.skills[index];
+            if (!skillToUpdate?.id) return;
+
+            const { error } = await supabase.from('skills').update({
+                name: updatedSkill.name,
+                category: String(updatedSkill.level)
+            }).eq('id', skillToUpdate.id);
+
+            if (error) throw error;
+            await fetchData();
+        } catch (e) {
+            console.error("Error updating skill", e);
+            alert("Error al actualizar la habilidad");
+        }
+    };
+
+    const deleteSkill = async (index: number) => {
+        try {
+            const skillToDelete = state.skills[index];
+            if (!skillToDelete?.id) return;
+
+            const { error } = await supabase.from('skills').delete().eq('id', skillToDelete.id);
+            if (error) throw error;
+            await fetchData();
+        } catch (e) {
+            console.error("Error deleting skill", e);
+            alert("Error al eliminar la habilidad");
+        }
     };
 
     return (
@@ -225,7 +273,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             addProject,
             updateProject,
             deleteProject,
-            updateSkill
+            addSkill,
+            updateSkill,
+            deleteSkill
         }}>
             {children}
         </PortfolioContext.Provider>

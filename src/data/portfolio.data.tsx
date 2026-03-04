@@ -3,7 +3,7 @@ import { ISkill, IFeature, IProject, ICardIcon, IHeroStats } from '../types';
 
 export const HERO_CONTENT = {
     title: 'Andrea Prada',
-    subtitle: 'Arquitecta de Software & Full-Stack',
+    subtitle: 'Desarrolladora Full Stack Jr',
     badge: 'Disponible para nuevas oportunidades',
     description: 'Especialista en construir aplicaciones robustas con **TypeScript** y arquitecturas escalables basadas en **Microservicios**. Me apasiona resolver problemas complejos (ese "desmadre" del backend) y crear experiencias fluidas y tipadas de principio a fin.',
 };

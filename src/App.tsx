@@ -13,6 +13,8 @@ import Login from './features/Admin/Login';
 import Dashboard from './features/Admin/Dashboard';
 import AdminHero from './features/Admin/views/AdminHero';
 import AdminProjects from './features/Admin/views/AdminProjects';
+import AdminSkills from './features/Admin/views/AdminSkills';
+import AdminSettings from './features/Admin/views/AdminSettings';
 
 // Public Page
 const PublicPage = () => (
@@ -44,7 +46,8 @@ function App() {
                       <Route path="dashboard" element={<Dashboard />} />
                       <Route path="hero" element={<AdminHero />} />
                       <Route path="projects" element={<AdminProjects />} />
-                      {/* Add more admin routes here like /admin/projects */}
+                      <Route path="skills" element={<AdminSkills />} />
+                      <Route path="settings" element={<AdminSettings />} />
                       <Route path="" element={<Dashboard />} />
                     </Routes>
                   </AdminLayout>

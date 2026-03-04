@@ -11,6 +11,8 @@ const AdminHero = () => {
     const [badge, setBadge] = useState(heroContent.badge);
     const [description, setDescription] = useState(heroContent.description);
     const [history, setHistory] = useState(heroContent.history || '');
+    const [linkedin, setLinkedin] = useState(heroContent.linkedin || '');
+    const [whatsapp, setWhatsapp] = useState(heroContent.whatsapp || '');
 
     const [isSaving, setIsSaving] = useState(false);
 
@@ -24,7 +26,9 @@ const AdminHero = () => {
             subtitle,
             badge,
             description,
-            history
+            history,
+            linkedin,
+            whatsapp
         });
 
         // Simulating artificial delay for UI feedback
@@ -78,6 +82,21 @@ const AdminHero = () => {
                     rows={8}
                     placeholder="Aquí puedes escribir tu biografía detallada..."
                 />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-glass-border pt-6 mt-6">
+                    <AdminInput
+                        label="URL de LinkedIn"
+                        value={linkedin}
+                        onChange={(e) => setLinkedin(e.target.value)}
+                        placeholder="https://linkedin.com/in/..."
+                    />
+                    <AdminInput
+                        label="Número de WhatsApp"
+                        value={whatsapp}
+                        onChange={(e) => setWhatsapp(e.target.value)}
+                        placeholder="E.g. +573001234567"
+                    />
+                </div>
 
                 <div className="pt-4 flex justify-end">
                     <button

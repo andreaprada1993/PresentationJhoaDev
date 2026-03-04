@@ -19,7 +19,7 @@ const Dashboard = () => {
                 <div className="glass-panel p-6">
                     <h3 className="text-xl font-heading font-semibold mb-2 text-text-primary">Habilidades</h3>
                     <p className="text-text-secondary mb-4">Actualiza tus habilidades y herramientas.</p>
-                    <button className="btn btn-secondary w-full justify-center">Editar Habilidades</button>
+                    <Link to="/admin/skills" className="btn btn-secondary w-full justify-center">Editar Habilidades</Link>
                 </div>
                 <div className="glass-panel p-6">
                     <h3 className="text-xl font-heading font-semibold mb-2 text-text-primary">Perfil & Hero</h3>
