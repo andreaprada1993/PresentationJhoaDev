@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Terminal, Database, Server, Code2, Cpu, Globe, Cloud, Layout } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
-// Tech-themed icons for the memory game
-const CARD_ICONS = [
-    { id: 1, icon: <Terminal size={32} />, name: 'Terminal' },
-    { id: 2, icon: <Database size={32} />, name: 'Database' },
-    { id: 3, icon: <Server size={32} />, name: 'Server' },
-    { id: 4, icon: <Code2 size={32} />, name: 'Code' },
-    { id: 5, icon: <Cpu size={32} />, name: 'CPU' },
-    { id: 6, icon: <Globe size={32} />, name: 'Web' },
-    { id: 7, icon: <Cloud size={32} />, name: 'Cloud' },
-    { id: 8, icon: <Layout size={32} />, name: 'UI' },
+// Fun emojis for the memory game
+const CARD_EMOJIS = [
+    { id: 1, emoji: '🚀', name: 'Cohete' },
+    { id: 2, emoji: '💻', name: 'Laptop' },
+    { id: 3, emoji: '🌈', name: 'Arcoíris' },
+    { id: 4, emoji: '🍕', name: 'Pizza' },
+    { id: 5, emoji: '🎨', name: 'Arte' },
+    { id: 6, emoji: '⚡', name: 'Rayo' },
+    { id: 7, emoji: '🦄', name: 'Unicornio' },
+    { id: 8, emoji: '🎮', name: 'Gamepad' },
 ];
 
 interface CardType {
     id: string;
     iconId: number;
-    icon: JSX.Element;
+    emoji: string;
     name: string;
     isFlipped: boolean;
     isMatched: boolean;
@@ -33,12 +33,12 @@ const Game = () => {
     // Initialize game
     const shuffleCards = () => {
         // Duplicate the icons array to create pairs
-        const shuffledCards = [...CARD_ICONS, ...CARD_ICONS]
+        const shuffledCards = [...CARD_EMOJIS, ...CARD_EMOJIS]
             .sort(() => Math.random() - 0.5) // Random shuffle
             .map((card, index) => ({
                 id: `${card.id}-${index}`, // Unique ID for each card
                 iconId: card.id,
-                icon: card.icon,
+                emoji: card.emoji,
                 name: card.name,
                 isFlipped: false,
                 isMatched: false,
@@ -55,6 +55,27 @@ const Game = () => {
     useEffect(() => {
         shuffleCards();
     }, []);
+
+    const triggerConfetti = () => {
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+        const interval: any = setInterval(function () {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+            // since particles fall down, start a bit higher than random
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+        }, 250);
+    };
 
     const handleCardClick = (index: number) => {
         // Prevent clicking if animating, or if card is already flipped/matched
@@ -88,8 +109,9 @@ const Game = () => {
                     setIsAnimating(false);
 
                     // Check if won
-                    if (matches + 1 === CARD_ICONS.length) {
+                    if (matches + 1 === CARD_EMOJIS.length) {
                         setIsWon(true);
+                        triggerConfetti();
                     }
                 }, 500);
             } else {
@@ -112,7 +134,7 @@ const Game = () => {
             <div className="container">
                 <h2 className="section-title">
                     <span>Tómate un descanso</span>
-                    Tech Match Game
+                    Emoji Match Game
                 </h2>
 
                 <div className="max-w-[800px] mx-auto p-6 sm:p-10 flex flex-col items-center gap-8 glass-panel">
@@ -124,9 +146,12 @@ const Game = () => {
 
                     {isWon ? (
                         <div className="text-center p-12 flex flex-col items-center gap-4 animate-fade-in">
-                            <h3 className="text-5xl gradient-text">¡Ganaste!</h3>
-                            <p className="text-xl text-text-secondary">Completaste el juego en {moves} movimientos.</p>
-                            <button onClick={shuffleCards} className="btn btn-primary mt-4">Jugar de nuevo</button>
+                            <div className="text-7xl mb-4 animate-bounce">🏆</div>
+                            <h3 className="text-5xl gradient-text font-bold">¡Lo lograste!</h3>
+                            <p className="text-xl text-text-secondary">Completaste el reto en {moves} movimientos.</p>
+                            <button onClick={shuffleCards} className="btn btn-primary mt-4 py-3 px-8 text-lg">
+                                Jugar de nuevo 🔄
+                            </button>
                         </div>
                     ) : (
                         <div className="grid grid-cols-4 gap-2 sm:gap-4 w-full">
@@ -139,10 +164,10 @@ const Game = () => {
                                 >
                                     <div className={`relative w-full h-full text-center transition-transform duration-700 ease-[cubic-bezier(0.4,0.0,0.2,1)] ${card.isFlipped || card.isMatched ? 'rotate-y-180' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
                                         <div className="absolute w-full h-full rounded-xl flex items-center justify-center bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-glass-border text-text-primary text-2xl font-bold shadow-[0_4px_6px_rgba(0,0,0,0.1)] transition-all duration-300 ease-in-out group-hover:bg-gradient-to-br group-hover:from-indigo-500/40 group-hover:to-purple-500/40 group-hover:shadow-[0_4px_15px_rgba(168,85,247,0.3)]" style={{ backfaceVisibility: 'hidden' }}>
-                                            <span className="opacity-50">?</span>
+                                            <span className="opacity-50 text-3xl">❓</span>
                                         </div>
-                                        <div className="absolute w-full h-full rounded-xl flex items-center justify-center bg-glass-bg border border-accent-primary shadow-[0_0_15px_rgba(99,102,241,0.3)] text-text-primary rotate-y-180" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                                            {card.icon}
+                                        <div className="absolute w-full h-full rounded-xl flex items-center justify-center bg-glass-bg border border-accent-primary shadow-[0_0_15px_rgba(99,102,241,0.3)] text-5xl rotate-y-180" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                                            {card.emoji}
                                         </div>
                                     </div>
                                 </div>
