@@ -1,4 +1,5 @@
 import { Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -45,6 +46,8 @@ const Footer = () => {
                     </p>
                     <p className="flex items-center gap-2">
                         Hecho con <Heart size={16} className="text-accent-tertiary" /> por Andrea
+                        <span className="opacity-50 mx-1">|</span>
+                        <Link to="/admin/login" className="hover:text-accent-primary transition-colors cursor-pointer">Admin</Link>
                     </p>
                 </div>
             </div>
