@@ -1,17 +1,20 @@
 // --- Shared Types ---
 
 export interface ISkill {
+    id?: string;
     name: string;
     level: number;
 }
 
 export interface IFeature {
+    id?: string;
     title: string;
     description: string;
     icon: JSX.Element;
 }
 
 export interface IProject {
+    id?: string;
     title: string;
     description: string;
     image: string;
