@@ -31,7 +31,7 @@ const Login = () => {
                     <div>
                         <input
                             type="password"
-                            placeholder="Contraseña (admin123)"
+                            placeholder="••••••••"
                             className="w-full bg-white/5 border border-glass-border rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-accent-primary transition-colors"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
