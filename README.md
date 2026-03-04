@@ -1,77 +1,94 @@
-# Portafolio Profesional - Arquitectura Limpia & TypeScript
+<div align="center">
+  <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/terminal-square.svg" alt="Logo" width="80" height="80">
+  
+  <h1 align="center">Portafolio & CMS Admin</h1>
 
-Un portafolio moderno, interactivo y centrado en el desarrollo tipado, diseñado para demostrar habilidades avanzadas en el ecosistema **TypeScript**, arquitecturas escalables (**Microservicios**) y metodologías de **Clean Code**.
-
-## 🚀 Tecnologías Principales
-
-- **Frontend Core**: React 18, TypeScript (Modo Estricto)
-- **Tooling & Build**: Vite, ESLint
-- **Estilos**: Vanilla CSS con variables nativas (CSS Variables) y metodología BEM-like para UI Glassmorphism.
-- **Iconografía**: Lucide React
-- **Arquitectura**: Separación de responsabilidades mediante Clean Architecture (Tipos, Datos, Hooks, Componentes).
-
-## 📂 Arquitectura del Proyecto (Clean Code)
-
-El proyecto está estructurado para escalar, separar la lógica de negocio de la interfaz de usuario (UI) y mantener un tipado estricto en toda la aplicación.
-
-```text
-src/
-├── types/                # Definiciones de interfaces globales de TypeScript (Contratos).
-│   └── index.ts          # Tipos base: IProject, ISkill, ICardIcon, etc.
-├── data/                 # Capa de datos estáticos (desacopla el contenido de los componentes).
-│   └── portfolio.data.ts # Configuraciones como Heroes, Skills y Projects.
-├── hooks/                # Custom React Hooks para la lógica de negocio.
-│   └── useMemoryGame.ts  # Control de estado y lógica del mini-juego.
-├── layout/               # Componentes estructurales de la página.
-│   ├── MainLayout.tsx    # Wrapper principal de la aplicación.
-│   ├── Navbar.tsx        # Menú de navegación interactivo.
-│   └── Footer.tsx        # Pie de página.
-├── features/             # Componentes encapsulados por dominio/funcionalidad.
-│   ├── Hero/             # Sección de introducción principal.
-│   ├── About/            # Sección de historia y barras de habilidades.
-│   ├── Projects/         # Cuadrícula de proyectos destacados.
-│   └── Game/             # Mini-juego interactivo de emparejamiento.
-├── index.css             # Tokens CSS Globales (Colores, Animaciones, Glassmorphism).
-└── App.tsx               # Punto de entrada de la UI.
-```
-
-### ¿Por qué esta arquitectura?
-1. **Mantenibilidad**: Si necesitas cambiar la descripción de un proyecto, solo tocas `src/data/`, no tienes que buscar entre cientos de líneas de JSX.
-2. **Reusabilidad**: La lógica compleja (como el juego de memoria) está aislada en `src/hooks/useMemoryGame.ts` y puede probarse (testing) independientemente de React.
-3. **Tipado Fuerte**: Gracias a `src/types/`, los errores de datos entrantes se capturan en tiempo de compilación.
-
-## 🎮 Características Destacadas
-
-- **Diseño Glassmorphism Premium**: UI moderna con blur en tiempo real, paleta de colores oscura, y neón sutil.
-- **Mini-Juego Integrado**: Incluye un "Tech Match Game" (Juego de Memoria) completamente funcional para demostrar el manejo complejo de estado en React (`useState`, `useEffect`, `useCallback`).
-- **Enfoque en Microservicios**: El contenido y la presentación enfatizan la capacidad de dominar sistemas distribuidos y arquitecturas complejas de backend, demostrando un perfil Full-Stack avanzado.
-
-## 🛠️ Instalación y Uso Local
-
-Para correr este proyecto en tu entorno local, necesitas tener instalado **Node.js** (v18 o superior).
-
-1. **Clonar el repositorio**
-```bash
-git clone https://github.com/andreaprada1993/PresentationJhoaDev.git
-cd PresentationJhoaDev
-```
-
-2. **Instalar dependencias**
-```bash
-npm install
-```
-
-3. **Ejecutar el servidor de desarrollo**
-```bash
-npm run dev
-```
-
-4. **Compilar para producción**
-```bash
-npm run build
-```
-
-El servidor local se iniciará generalmente en `http://localhost:5173`.
+  <p align="center">
+    Un portafolio moderno, dinámico y auto-administrable construido para desarrolladores Full Stack. 
+    <br />
+    <br />
+    <a href="#-características">Características</a>
+    ·
+    <a href="#-tecnologías">Tecnologías</a>
+    ·
+    <a href="#-panel-de-administración-cms">Panel CMS</a>
+    ·
+    <a href="#-instalación-y-uso">Instalación</a>
+  </p>
+</div>
 
 ---
-*Diseñado y desarrollado con ♥ aplicando principios SOLID y código limpio.*
+
+## 🚀 Características
+
+- **Diseño Ultra Moderno:** Estilizado meticulosamente con **Tailwind CSS v3**, layouts fluidos, animaciones sutiles, *glassmorphism* y total responsividad.
+- **Arquitectura Basada en Componentes:** Creado con **React + Vite** para tiempos de carga y construcción instantáneos.
+- **Tipado Fuerte:** Desarrollado integralmente en **TypeScript** garantizando código limpio y seguro.
+- **Juego Interactivo:** Incluye un mini-juego de cartas *Memory Match* interactivo construido nativamente.
+- **Content Management System (CMS):** Un panel de administración protegido por rutas privadas para editar toda la información del sitio en tiempo real desde una interfaz gráfica sin tocar código fuente.
+
+<br />
+
+## 🛠 Tecnologías
+
+Este proyecto está construido sobre las siguientes tecnologías:
+
+- ⚛️ **[React 18](https://reactjs.org/)** - Librería UI
+- ⚡ **[Vite](https://vitejs.dev/)** - Empaquetador de módulos increíblemente rápido
+- 📐 **[TypeScript](https://www.typescriptlang.org/)** - Tipado estático
+- 🎨 **[Tailwind CSS v3](https://tailwindcss.com/)** - Framework CSS de utilidad prioritaria
+- 📍 **[React Router DOM v6](https://reactrouter.com/)** - Enrutamiento dinámico en cliente
+- 🎭 **[Lucide React](https://lucide.dev/)** - Iconos y vectores de SVG limpios
+
+<br />
+
+## 🔒 Panel de Administración (CMS)
+
+El portafolio expone una arquitectura CMS apoyada por `Context API` y almacenamiento local, ideal para desarrolladores que desean mantener su sitio actualizado sin necesidad de crear un *PR*.
+
+**Ruta de Acceso:** `http://localhost:5173/admin/login`
+> 🔑 **Credenciales Mock de Prueba:** Puedes ingresar utilizando la clave `admin123`.
+
+### Capacidades del Dashboard:
+- **Editor del Hero:** Personaliza el título de inicio, tu subtítulo y tu biografía (con soporte ligero para *Markdown*). 
+- **Gestor de Proyectos:** CRUD Completo (Crear, Leer, Actualizar, Borrar). Interfaz interactiva para añadir nuevos proyectos con sus respectivas URLs, imágenes representativas y tarjetas de etiquetas técnicas (*tags*). 
+- **Persistencia Autónoma:** Toda la data ingresada a través del panel persiste fluidamente en tu navegador sin base de datos temporal requerida, actualizando el DOM público de forma paralela.
+
+<br />
+
+## ⚙️ Instalación y Uso
+
+Para desplegar este proyecto localmente, sigue estas instrucciones:
+
+1. **Clona el repositorio**
+   ```bash
+   git clone https://github.com/tu-usuario/tu-repo.git
+   cd portafolioCV
+   ```
+
+2. **Instala las dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Inicia el servidor de desarrollo local**
+   ```bash
+   npm run dev
+   ```
+
+4. **Compilar para producción (Build)**
+   ```bash
+   npm run build
+   ```
+
+5. **Previsualizar la compilación**
+   ```bash
+   npm run preview
+   ```
+
+<br />
+
+---
+<div align="center">
+  Hecho con ❤️ y ☕ por Andrea Prada. 
+</div>
