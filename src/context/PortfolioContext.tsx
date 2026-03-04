@@ -33,7 +33,13 @@ interface PortfolioContextType {
 const PortfolioContext = createContext<PortfolioContextType | undefined>(undefined);
 
 export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
-    const [state, setState] = useState({
+    const [state, setState] = useState<{
+        heroContent: IHeroContent;
+        heroStats: IHeroStats[];
+        skills: ISkill[];
+        features: IFeature[];
+        projects: IProject[];
+    }>({
         heroContent: HERO_CONTENT,
         heroStats: HERO_STATS,
         skills: SKILLS_DATA,
@@ -78,7 +84,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
 
                 if (profileData) {
                     newState.heroContent = {
-                        id: profileData.id,
+                        id: String(profileData.id),
                         title: profileData.name,
                         subtitle: profileData.role,
                         badge: 'Open to work',
