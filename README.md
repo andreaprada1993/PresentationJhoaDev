@@ -81,10 +81,22 @@ Para desplegar este proyecto localmente, sigue estas instrucciones:
    npm run build
    ```
 
-5. **Previsualizar la compilación**
+8. **Previsualizar la compilación**
    ```bash
    npm run preview
    ```
+
+### ⚙️ Configuración de Supabase (Importante)
+
+Para que el **Panel de Administración** te permita guardar cambios en la base de datos (Proyectos, Habilidades, Hero), debes desactivar el *Row Level Security (RLS)* en tus tablas de Supabase, de lo contrario obtendrás un error `42501` (Restricción de Privilegios). 
+
+Ve a **SQL Editor** en Supabase, pega y ejecuta este código:
+
+```sql
+alter table "profile" disable row level security;
+alter table "projects" disable row level security;
+alter table "skills" disable row level security;
+```
 
 <br />
 
