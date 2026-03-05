@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { usePortfolio } from '../../../context/PortfolioContext';
 import { AdminInput, AdminTextarea } from '../components/FormElements';
-import { Save, ArrowLeft } from 'lucide-react';
+import { Save, ArrowLeft, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminHero = () => {
@@ -16,27 +16,30 @@ const AdminHero = () => {
     const [whatsapp, setWhatsapp] = useState(heroContent.whatsapp || '');
 
     const [isSaving, setIsSaving] = useState(false);
+    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
+        setMessage(null);
 
-        updateHeroContent({
-            ...heroContent,
-            title,
-            subtitle,
-            badge,
-            description,
-            history,
-            linkedin,
-            whatsapp
-        });
-
-        // Simulating artificial delay for UI feedback
-        setTimeout(() => {
+        try {
+            await updateHeroContent({
+                ...heroContent,
+                title,
+                subtitle,
+                badge,
+                description,
+                history,
+                linkedin,
+                whatsapp
+            });
+            setMessage({ type: 'success', text: '¡Sección Hero y Mi Historia actualizadas con éxito!' });
+        } catch (error) {
+            setMessage({ type: 'error', text: 'Error al actualizar la información. Por favor, intenta de nuevo.' });
+        } finally {
             setIsSaving(false);
-            alert('¡Sección Hero y Mi Historia actualizadas con éxito!');
-        }, 600);
+        }
     };
 
     return (
@@ -48,13 +51,20 @@ const AdminHero = () => {
             <div className="glass-panel p-8">
                 <h2 className="text-2xl font-heading font-semibold text-text-primary mb-6">Editar Sección Principal e Historia</h2>
 
+                {message && (
+                    <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${message.type === 'success' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                        }`}>
+                        {message.type === 'success' ? <ShieldCheck size={20} /> : <AlertCircle size={20} />}
+                        <p className="text-sm">{message.text}</p>
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <AdminInput
                         label="Título Principal"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="E.g. Andrea Prada"
-                        required
                     />
 
                     <AdminInput
@@ -62,7 +72,6 @@ const AdminHero = () => {
                         value={subtitle}
                         onChange={(e) => setSubtitle(e.target.value)}
                         placeholder="E.g. Arquitecta de Software"
-                        required
                     />
 
                     <AdminInput
@@ -76,7 +85,6 @@ const AdminHero = () => {
                         label="Descripción Corta (Hero)"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        required
                         rows={3}
                     />
 
@@ -84,7 +92,6 @@ const AdminHero = () => {
                         label="Mi Historia (Sección About)"
                         value={history}
                         onChange={(e) => setHistory(e.target.value)}
-                        required
                         rows={8}
                         placeholder="Aquí puedes escribir tu biografía detallada..."
                     />

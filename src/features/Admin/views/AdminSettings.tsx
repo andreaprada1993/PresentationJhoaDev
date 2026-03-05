@@ -30,11 +30,14 @@ const AdminSettings = () => {
             // Update the admin_password key in the settings table
             const { error } = await supabase
                 .from('settings')
-                .update({
-                    value: newPassword,
-                    updated_at: new Date().toISOString()
-                })
-                .eq('key', 'admin_password');
+                .upsert(
+                    {
+                        key: 'admin_password',
+                        value: newPassword,
+                        updated_at: new Date().toISOString()
+                    },
+                    { onConflict: 'key' }
+                );
 
             if (error) throw error;
 

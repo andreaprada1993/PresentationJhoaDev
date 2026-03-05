@@ -145,7 +145,7 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             await fetchData();
         } catch (e) {
             console.error("Error updating hero content", e);
-            alert("Error al actualizar la información del perfil");
+            throw e;
         }
     };
 
