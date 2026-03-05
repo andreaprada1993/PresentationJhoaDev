@@ -96,6 +96,14 @@ Ve a **SQL Editor** en Supabase, pega y ejecuta este código:
 alter table "profile" disable row level security;
 alter table "projects" disable row level security;
 alter table "skills" disable row level security;
+
+-- Añadir nuevas columnas al perfil si no existen
+alter table "profile" add column if not exists history text;
+alter table "profile" add column if not exists linkedin text;
+alter table "profile" add column if not exists whatsapp text;
+
+-- Recargar esquema de Supabase
+NOTIFY pgrst, 'reload schema';
 ```
 
 <br />
