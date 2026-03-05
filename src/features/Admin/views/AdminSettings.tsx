@@ -14,8 +14,8 @@ const AdminSettings = () => {
         e.preventDefault();
         setMessage(null);
 
-        if (newPassword.length < 6) {
-            setMessage({ type: 'error', text: 'La contraseña debe tener al menos 6 caracteres.' });
+        if (newPassword.length < 8) {
+            setMessage({ type: 'error', text: 'La contraseña debe tener al menos 8 caracteres.' });
             return;
         }
 
@@ -86,7 +86,7 @@ const AdminSettings = () => {
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            placeholder="Mínimo 6 caracteres"
+                            placeholder="Mínimo 8 caracteres"
                             required
                         />
 
