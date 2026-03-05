@@ -46,7 +46,7 @@ const AdminProjects = () => {
         setEditIndex(null);
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         const newProject: IProject = {
@@ -58,19 +58,27 @@ const AdminProjects = () => {
             githubUrl
         };
 
-        if (editIndex !== null) {
-            updateProject(editIndex, newProject);
-        } else {
-            addProject(newProject);
-        }
+        try {
+            if (editIndex !== null) {
+                await updateProject(editIndex, newProject);
+            } else {
+                await addProject(newProject);
+            }
 
-        closeForm();
-        alert('¡Proyecto guardado con éxito!');
+            closeForm();
+            alert('¡Proyecto guardado con éxito!');
+        } catch (e: any) {
+            alert('Hubo un error: ' + (e.message || 'No se pudo guardar el proyecto. Revisa la consola o configuración de Supabase.'));
+        }
     };
 
-    const handleDelete = (index: number) => {
+    const handleDelete = async (index: number) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
-            deleteProject(index);
+            try {
+                await deleteProject(index);
+            } catch (e: any) {
+                alert('Hubo un error: ' + (e.message || 'No se pudo eliminar el proyecto.'));
+            }
         }
     };
 

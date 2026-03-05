@@ -42,19 +42,27 @@ const AdminSkills = () => {
             level: Number(level)
         };
 
-        if (editIndex !== null) {
-            await updateSkill(editIndex, skillData);
-        } else {
-            await addSkill(skillData);
-        }
+        try {
+            if (editIndex !== null) {
+                await updateSkill(editIndex, skillData);
+            } else {
+                await addSkill(skillData);
+            }
 
-        closeForm();
-        alert('¡Habilidad guardada con éxito!');
+            closeForm();
+            alert('¡Habilidad guardada con éxito!');
+        } catch (e: any) {
+            alert('Hubo un error: ' + (e.message || 'No se pudo guardar la habilidad. Revisa la consola o configuración de Supabase.'));
+        }
     };
 
     const handleDelete = async (index: number) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta habilidad?')) {
-            await deleteSkill(index);
+            try {
+                await deleteSkill(index);
+            } catch (e: any) {
+                alert('Hubo un error: ' + (e.message || 'No se pudo eliminar la habilidad.'));
+            }
         }
     };
 

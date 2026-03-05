@@ -161,9 +161,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             }]);
             if (error) throw error;
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error adding project", e);
-            alert("Error al guardar el proyecto");
+            throw new Error(e.message || "Error al guardar el proyecto");
         }
     };
 
@@ -191,9 +191,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
 
             if (error) throw error;
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error updating project", e);
-            alert("Error al actualizar el proyecto");
+            throw new Error(e.message || "Error al actualizar el proyecto");
         }
     };
 
@@ -213,9 +213,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             const { error } = await supabase.from('projects').delete().eq('id', projectToDelete.id);
             if (error) throw error;
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error deleting project", e);
-            alert("Error al eliminar el proyecto");
+            throw new Error(e.message || "Error al eliminar el proyecto");
         }
     };
 
@@ -227,9 +227,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             }]);
             if (error) throw error;
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error adding skill", e);
-            alert("Error al guardar la habilidad");
+            throw new Error(e.message || "Error al guardar la habilidad");
         }
     };
 
@@ -245,9 +245,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
 
             if (error) throw error;
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error updating skill", e);
-            alert("Error al actualizar la habilidad");
+            throw new Error(e.message || "Error al actualizar la habilidad");
         }
     };
 
@@ -259,9 +259,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
             const { error } = await supabase.from('skills').delete().eq('id', skillToDelete.id);
             if (error) throw error;
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error deleting skill", e);
-            alert("Error al eliminar la habilidad");
+            throw new Error(e.message || "Error al eliminar la habilidad");
         }
     };
 
