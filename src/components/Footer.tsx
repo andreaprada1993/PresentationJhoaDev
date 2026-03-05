@@ -51,9 +51,9 @@ const Footer = () => {
                     <p>
                         &copy; {currentYear} Andrea Prada. Todos los derechos reservados.
                     </p>
-                    <p className="flex items-center gap-2">
+                    <p className="flex items-center gap-2 group">
                         Hecho con <Heart size={16} className="text-accent-tertiary" /> por Andrea
-                        <span className="opacity-0 transition-opacity duration-300 hover:opacity-100 flex items-center">
+                        <span className="opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center">
                             <span className="opacity-50 mx-1">|</span>
                             <Link to="/admin/login" className="hover:text-accent-primary transition-colors cursor-pointer">Admin</Link>
                         </span>

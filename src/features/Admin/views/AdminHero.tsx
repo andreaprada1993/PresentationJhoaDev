@@ -35,8 +35,9 @@ const AdminHero = () => {
                 whatsapp
             });
             setMessage({ type: 'success', text: '¡Sección Hero y Mi Historia actualizadas con éxito!' });
-        } catch (error) {
-            setMessage({ type: 'error', text: 'Error al actualizar la información. Por favor, intenta de nuevo.' });
+        } catch (error: any) {
+            console.error(error);
+            setMessage({ type: 'error', text: `Error al actualizar: ${error.message || 'Por favor, intenta de nuevo.'}` });
         } finally {
             setIsSaving(false);
         }

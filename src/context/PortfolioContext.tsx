@@ -143,9 +143,9 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                 if (error) throw error;
             }
             await fetchData();
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error updating hero content", e);
-            throw e;
+            throw new Error(e.message || "Error al actualizar la sección principal");
         }
     };
 
