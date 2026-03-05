@@ -100,14 +100,12 @@ const AdminProjects = () => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="E.g. E-Commerce Microservices"
-                        required
                     />
 
                     <AdminTextarea
                         label="Descripción"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        required
                         rows={3}
                     />
 
@@ -116,7 +114,6 @@ const AdminProjects = () => {
                         value={image}
                         onChange={(e) => setImage(e.target.value)}
                         placeholder="https://..."
-                        required
                     />
 
                     <AdminInput
@@ -124,7 +121,6 @@ const AdminProjects = () => {
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
                         placeholder="React, Node.js, MongoDB"
-                        required
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

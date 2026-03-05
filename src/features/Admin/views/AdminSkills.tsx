@@ -84,7 +84,6 @@ const AdminSkills = () => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="E.g. React, TypeScript, Node.js"
-                        required
                     />
 
                     <div>

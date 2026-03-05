@@ -47,7 +47,7 @@ Este proyecto está construido sobre las siguientes tecnologías:
 El portafolio expone una arquitectura CMS apoyada por `Context API` y almacenamiento local, ideal para desarrolladores que desean mantener su sitio actualizado sin necesidad de crear un *PR*.
 
 **Ruta de Acceso:** `http://localhost:5173/admin/login`
-> 🔑 **Credenciales Mock de Prueba:** Puedes ingresar utilizando la clave `admin123`.
+> 🔑 **Credenciales Mock de Prueba:**
 
 ### Capacidades del Dashboard:
 - **Editor del Hero:** Personaliza el título de inicio, tu subtítulo y tu biografía (con soporte ligero para *Markdown*). 
