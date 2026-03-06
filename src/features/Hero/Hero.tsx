@@ -1,7 +1,9 @@
 import { ArrowRight, Download } from 'lucide-react';
-import { HERO_CONTENT, HERO_STATS } from '../../data/portfolio.data';
+import { usePortfolio } from '../../context/PortfolioContext';
 
 const Hero = () => {
+    const { heroContent, heroStats } = usePortfolio();
+
     return (
         <section className="hero" id="home">
             <div className="blob-1 bg-blob"></div>
@@ -11,16 +13,16 @@ const Hero = () => {
                 <div className="hero-content animate-fade-in">
                     <div className="badge glass-panel">
                         <span className="badge-dot"></span>
-                        {HERO_CONTENT.badge}
+                        {heroContent.badge}
                     </div>
 
                     <h1 className="hero-title">
-                        Hola, soy <span className="gradient-text">{HERO_CONTENT.title}</span>
-                        <br /> {HERO_CONTENT.subtitle}
+                        Hola, soy <span className="gradient-text">{heroContent.title}</span>
+                        <br /> {heroContent.subtitle}
                     </h1>
 
                     <p className="hero-description">
-                        {HERO_CONTENT.description.split('**').map((text, i) =>
+                        {heroContent.description.split('**').map((text, i) =>
                             i % 2 === 1 ? <strong key={i}>{text}</strong> : <span key={i}>{text}</span>
                         )}
                     </p>
@@ -35,7 +37,7 @@ const Hero = () => {
                     </div>
 
                     <div className="hero-stats">
-                        {HERO_STATS.map((stat, idx) => (
+                        {(heroStats || []).map((stat, idx) => (
                             <div key={idx} className="stat-item glass-panel">
                                 <h3 className="gradient-text">{stat.title}</h3>
                                 <p>{stat.description}</p>

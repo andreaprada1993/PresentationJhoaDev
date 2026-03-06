@@ -101,6 +101,16 @@ alter table "skills" disable row level security;
 alter table "profile" add column if not exists history text;
 alter table "profile" add column if not exists linkedin text;
 alter table "profile" add column if not exists whatsapp text;
+alter table "profile" add column if not exists stats jsonb;
+
+-- Crear la tabla de configuración para contraseñas si no existe
+create table if not exists "settings" (
+  id uuid default uuid_generate_v4() primary key,
+  key text unique not null,
+  value text not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now())
+);
+alter table "settings" disable row level security;
 
 -- Recargar esquema de Supabase
 NOTIFY pgrst, 'reload schema';

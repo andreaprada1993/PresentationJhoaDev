@@ -1,8 +1,9 @@
 import { useState, FormEvent } from 'react';
 import { usePortfolio } from '../../../context/PortfolioContext';
 import { AdminInput, AdminTextarea } from '../components/FormElements';
-import { Save, ArrowLeft, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Save, ArrowLeft, ShieldCheck, AlertCircle, Plus, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { IHeroStats } from '../../../types';
 
 const AdminHero = () => {
     const { heroContent, updateHeroContent } = usePortfolio();
@@ -14,6 +15,16 @@ const AdminHero = () => {
     const [history, setHistory] = useState(heroContent.history || '');
     const [linkedin, setLinkedin] = useState(heroContent.linkedin || '');
     const [whatsapp, setWhatsapp] = useState(heroContent.whatsapp || '');
+    const [stats, setStats] = useState<IHeroStats[]>(heroContent.stats || []);
+
+    const handleStatChange = (index: number, field: keyof IHeroStats, value: string) => {
+        const newStats = [...stats];
+        newStats[index] = { ...newStats[index], [field]: value };
+        setStats(newStats);
+    };
+
+    const addStat = () => setStats([...stats, { title: '', description: '' }]);
+    const removeStat = (index: number) => setStats(stats.filter((_, i) => i !== index));
 
     const [isSaving, setIsSaving] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
@@ -32,7 +43,8 @@ const AdminHero = () => {
                 description,
                 history,
                 linkedin,
-                whatsapp
+                whatsapp,
+                stats
             });
             setMessage({ type: 'success', text: '¡Sección Hero y Mi Historia actualizadas con éxito!' });
         } catch (error: any) {
@@ -110,6 +122,52 @@ const AdminHero = () => {
                             onChange={(e) => setWhatsapp(e.target.value)}
                             placeholder="E.g. +573001234567"
                         />
+                    </div>
+
+                    <div className="pt-6 mt-6 border-t border-glass-border">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-heading font-semibold text-text-primary">Tarjetas de Estadísticas Principales</h3>
+                            <button
+                                type="button"
+                                onClick={addStat}
+                                className="text-sm flex items-center gap-1 text-accent-primary hover:text-white transition-colors bg-accent-primary/10 hover:bg-accent-primary px-3 py-1.5 rounded-lg"
+                            >
+                                <Plus size={16} /> Añadir Tarjeta
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            {stats.length === 0 && (
+                                <p className="text-text-tertiary text-sm italic">No hay tarjetas de estadísticas configuradas.</p>
+                            )}
+                            {stats.map((stat, idx) => (
+                                <div key={idx} className="bg-black/20 p-5 rounded-xl border border-glass-border flex flex-col gap-4 relative group">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm font-medium text-text-secondary">Tarjeta #{idx + 1}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => removeStat(idx)}
+                                            className="text-red-400/50 hover:text-red-400 transition-colors p-1"
+                                            title="Eliminar esta tarjeta"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4">
+                                        <AdminInput
+                                            label="Título (E.g. Backend & Cloud)"
+                                            value={stat.title}
+                                            onChange={(e) => handleStatChange(idx, 'title', e.target.value)}
+                                        />
+                                        <AdminInput
+                                            label="Descripción (E.g. Node.js, Docker...)"
+                                            value={stat.description}
+                                            onChange={(e) => handleStatChange(idx, 'description', e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="pt-4 flex justify-end">

@@ -12,6 +12,7 @@ export interface IHeroContent {
     history?: string;
     linkedin?: string;
     whatsapp?: string;
+    stats?: IHeroStats[];
 }
 
 interface PortfolioContextType {
@@ -96,8 +97,13 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                         description: profileData.description,
                         history: profileData.history || '',
                         linkedin: profileData.linkedin || '',
-                        whatsapp: profileData.whatsapp || ''
+                        whatsapp: profileData.whatsapp || '',
+                        stats: profileData.stats || []
                     };
+
+                    if (profileData.stats && profileData.stats.length > 0) {
+                        newState.heroStats = profileData.stats;
+                    }
                 }
 
                 if (skillsData && skillsData.length > 0) {
@@ -127,7 +133,8 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                     description: content.description,
                     history: content.history,
                     linkedin: content.linkedin,
-                    whatsapp: content.whatsapp
+                    whatsapp: content.whatsapp,
+                    stats: content.stats
                 }).eq('id', content.id);
                 if (error) throw error;
             } else {
@@ -138,7 +145,8 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
                     description: content.description,
                     history: content.history,
                     linkedin: content.linkedin,
-                    whatsapp: content.whatsapp
+                    whatsapp: content.whatsapp,
+                    stats: content.stats
                 }]);
                 if (error) throw error;
             }
