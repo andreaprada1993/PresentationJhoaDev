@@ -49,9 +49,9 @@ const AdminSettings = () => {
             setMessage({ type: 'success', text: '¡Contraseña actualizada con éxito!' });
             setNewPassword('');
             setConfirmPassword('');
-        } catch (e) {
+        } catch (e: any) {
             console.error("Error updating password", e);
-            setMessage({ type: 'error', text: 'Error al actualizar la contraseña.' });
+            setMessage({ type: 'error', text: `Error al actualizar: ${e.message || 'Por favor, intenta de nuevo.'}` });
         } finally {
             setIsSaving(false);
         }
