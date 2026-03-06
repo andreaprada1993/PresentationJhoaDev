@@ -46,13 +46,12 @@ Este proyecto está construido sobre las siguientes tecnologías:
 
 El portafolio expone una arquitectura CMS apoyada por `Context API` y almacenamiento local, ideal para desarrolladores que desean mantener su sitio actualizado sin necesidad de crear un *PR*.
 
-**Ruta de Acceso:** `http://localhost:5173/admin/login`
-> 🔑 **Credenciales Mock de Prueba:**
+**Ruta de Acceso Seguro:** `/admin/login`
 
 ### Capacidades del Dashboard:
 - **Editor del Hero:** Personaliza el título de inicio, tu subtítulo y tu biografía (con soporte ligero para *Markdown*). 
 - **Gestor de Proyectos:** CRUD Completo (Crear, Leer, Actualizar, Borrar). Interfaz interactiva para añadir nuevos proyectos con sus respectivas URLs, imágenes representativas y tarjetas de etiquetas técnicas (*tags*). 
-- **Persistencia Autónoma:** Toda la data ingresada a través del panel persiste fluidamente en tu navegador sin base de datos temporal requerida, actualizando el DOM público de forma paralela.
+- **Base de Datos en Tiempo Real:** Configurado para integrarse fluida y visualmente con Supabase (BaaS) brindando lecturas y escrituras seguras a través de variables de entorno.
 
 <br />
 
@@ -86,37 +85,21 @@ Para desplegar este proyecto localmente, sigue estas instrucciones:
    npm run preview
    ```
 
-### ⚙️ Configuración de Supabase (Importante)
+### ⚙️ Variables de Entorno (Importante)
 
-Para que el **Panel de Administración** te permita guardar cambios en la base de datos (Proyectos, Habilidades, Hero), debes desactivar el *Row Level Security (RLS)* en tus tablas de Supabase, de lo contrario obtendrás un error `42501` (Restricción de Privilegios). 
+Para que el **Panel de Administración** funcione y se conecte al CMS correctamente, debes configurar tus variables de entorno.
 
-Ve a **SQL Editor** en Supabase, pega y ejecuta este código:
+Crea un archivo `.env` en la raíz del proyecto (basado en el `.env.example` si existe) con las credenciales de tu propio proyecto de Supabase:
 
-```sql
-alter table "profile" disable row level security;
-alter table "projects" disable row level security;
-alter table "skills" disable row level security;
-
--- Añadir nuevas columnas al perfil si no existen
-alter table "profile" add column if not exists history text;
-alter table "profile" add column if not exists linkedin text;
-alter table "profile" add column if not exists whatsapp text;
-alter table "profile" add column if not exists stats jsonb;
-
--- Crear la tabla de configuración para contraseñas si no existe
-create table if not exists "settings" (
-  id uuid default uuid_generate_v4() primary key,
-  key text unique not null,
-  value text not null,
-  updated_at timestamp with time zone default timezone('utc'::text, now())
-);
-alter table "settings" disable row level security;
-
--- Recargar esquema de Supabase
-NOTIFY pgrst, 'reload schema';
+```env
+VITE_SUPABASE_URL=tu_url_de_supabase
+VITE_SUPABASE_ANON_KEY=tu_anon_key_de_supabase
+VITE_ADMIN_PASSWORD=tu_contraseña_segura_de_respaldo
 ```
 
-<br />
+> **Nota de Seguridad:** Las credenciales de base de datos o contraseñas jamás deben subirse al repositorio público. Asegúrate de que el archivo `.env` esté incluido en tu `.gitignore`.
+
+*(El esquema de la base de datos de Supabase requiere las tablas `profile`, `projects`, `skills` y `settings` con las políticas RLS configuradas según las necesidades de tu instancia).*
 
 ---
 <div align="center">
