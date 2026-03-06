@@ -262,7 +262,15 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     const deleteSkill = async (index: number) => {
         try {
             const skillToDelete = state.skills[index];
-            if (!skillToDelete?.id) return;
+            if (!skillToDelete?.id) {
+                // If it doesn't have an ID, just remove it locally
+                setState(prev => {
+                    const newSkills = [...prev.skills];
+                    newSkills.splice(index, 1);
+                    return { ...prev, skills: newSkills };
+                });
+                return;
+            }
 
             const { error } = await supabase.from('skills').delete().eq('id', skillToDelete.id);
             if (error) throw error;

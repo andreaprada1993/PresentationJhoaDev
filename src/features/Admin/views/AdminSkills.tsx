@@ -44,7 +44,15 @@ const AdminSkills = () => {
 
         try {
             if (editIndex !== null) {
-                await updateSkill(editIndex, skillData);
+                // If it has an ID, update it. If it's mock data without an ID, we must add it instead.
+                const hasId = skills[editIndex].id;
+                if (hasId) {
+                    await updateSkill(editIndex, skillData);
+                } else {
+                    // It's a mock skill from the initial state, let's "save" it for real
+                    await addSkill(skillData);
+                    // Optionally, we could remove the mock one, but reloading state will handle it
+                }
             } else {
                 await addSkill(skillData);
             }
@@ -59,6 +67,8 @@ const AdminSkills = () => {
     const handleDelete = async (index: number) => {
         if (window.confirm('¿Estás seguro de que quieres eliminar esta habilidad?')) {
             try {
+                // If it doesn't have an ID, it's mock data, we can't really delete it from DB
+                // but we call deleteSkill so the Context can remove it locally
                 await deleteSkill(index);
             } catch (e: any) {
                 alert('Hubo un error: ' + (e.message || 'No se pudo eliminar la habilidad.'));
@@ -66,55 +76,8 @@ const AdminSkills = () => {
         }
     };
 
-    if (isEditing) {
-        return (
-            <div className="glass-panel p-8 animate-fade-in">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-heading font-semibold text-text-primary">
-                        {editIndex !== null ? 'Editar Habilidad' : 'Nueva Habilidad'}
-                    </h2>
-                    <button onClick={closeForm} className="text-text-secondary hover:text-white transition-colors">
-                        <X size={24} />
-                    </button>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <AdminInput
-                        label="Nombre de la Habilidad"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="E.g. React, TypeScript, Node.js"
-                    />
-
-                    <div>
-                        <label className="block text-sm font-medium text-text-secondary mb-2">
-                            Nivel / Porcentaje ({level}%)
-                        </label>
-                        <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={level}
-                            onChange={(e) => setLevel(Number(e.target.value))}
-                            className="w-full accent-accent-primary bg-white/5 rounded-lg appearance-none h-2 cursor-pointer"
-                        />
-                    </div>
-
-                    <div className="pt-4 flex justify-end gap-3">
-                        <button type="button" onClick={closeForm} className="btn bg-white/5 text-text-primary hover:bg-white/10">
-                            Cancelar
-                        </button>
-                        <button type="submit" className="btn btn-primary flex items-center gap-2">
-                            Guardar Habilidad <Save size={18} />
-                        </button>
-                    </div>
-                </form>
-            </div>
-        );
-    }
-
     return (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6 animate-fade-in relative hidden-scrollbar">
             <Link to="/admin/dashboard" className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-primary transition-colors">
                 <ArrowLeft size={18} /> Regresar al Dashboard
             </Link>
@@ -128,26 +91,26 @@ const AdminSkills = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {skills.map((skill, idx) => (
-                    <div key={idx} className="glass-panel p-6 flex justify-between items-center">
-                        <div>
-                            <h3 className="text-lg font-heading text-text-primary">{skill.name}</h3>
-                            <div className="flex items-center gap-2 mt-1">
-                                <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                    <div className="h-full bg-accent-primary" style={{ width: `${skill.level}%` }}></div>
+                    <div key={idx} className="glass-panel p-6 flex justify-between items-center group">
+                        <div className="w-full pr-4">
+                            <h3 className="text-lg font-heading text-text-primary truncate">{skill.name}</h3>
+                            <div className="flex items-center gap-2 mt-2 w-full">
+                                <span className="text-xs font-semibold text-accent-primary min-w-[3ch]">{skill.level}%</span>
+                                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                                    <div className="h-full bg-accent-primary rounded-full transition-all duration-500 ease-out" style={{ width: `${skill.level}%` }}></div>
                                 </div>
-                                <span className="text-xs text-text-secondary">{skill.level}%</span>
                             </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2 shrink-0">
                             <button
                                 onClick={() => openEditForm(idx)}
-                                className="p-2 rounded-lg bg-white/5 text-text-secondary hover:text-white hover:bg-white/10 transition-colors"
+                                className="p-2 rounded-lg bg-white/5 text-text-secondary hover:text-accent-primary hover:bg-white/10 transition-colors"
                             >
                                 <Edit2 size={16} />
                             </button>
                             <button
                                 onClick={() => handleDelete(idx)}
-                                className="p-2 rounded-lg bg-white/5 text-red-400 hover:text-white hover:bg-red-500 transition-colors"
+                                className="p-2 rounded-lg bg-white/5 text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                             >
                                 <Trash2 size={16} />
                             </button>
@@ -164,6 +127,64 @@ const AdminSkills = () => {
                     </div>
                 )}
             </div>
+
+            {/* Modal de Edición */}
+            {isEditing && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+                    <div className="bg-bg-primary border border-glass-border w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-slide-up">
+                        <div className="flex justify-between items-center p-6 border-b border-glass-border bg-bg-secondary/50">
+                            <h2 className="text-xl font-heading font-semibold text-text-primary">
+                                {editIndex !== null ? 'Editar Habilidad' : 'Nueva Habilidad'}
+                            </h2>
+                            <button onClick={closeForm} className="text-text-secondary hover:text-white transition-colors p-1 rounded-md hover:bg-white/10">
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                            <AdminInput
+                                label="Nombre de la Habilidad"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="E.g. React, TypeScript, Node.js"
+                                required
+                            />
+
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <label className="block text-sm font-medium text-text-secondary">
+                                        Nivel de Dominio
+                                    </label>
+                                    <span className="text-sm font-bold text-accent-primary">{level}%</span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={level}
+                                    onChange={(e) => setLevel(Number(e.target.value))}
+                                    className="w-full accent-accent-primary bg-white/10 rounded-lg appearance-none h-2.5 cursor-pointer outline-none focus:ring-2 focus:ring-accent-primary/50"
+                                />
+                                <div className="flex justify-between text-xs text-text-tertiary mt-2">
+                                    <span>Básico</span>
+                                    <span>Intermedio</span>
+                                    <span>Avanzado</span>
+                                    <span>Experto</span>
+                                </div>
+                            </div>
+
+                            <div className="pt-6 flex justify-end gap-3 border-t border-glass-border">
+                                <button type="button" onClick={closeForm} className="px-4 py-2 rounded-lg font-medium text-text-secondary hover:bg-white/5 hover:text-white transition-colors">
+                                    Cancelar
+                                </button>
+                                <button type="submit" className="btn btn-primary flex items-center gap-2 py-2">
+                                    Guardar <Save size={18} />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
