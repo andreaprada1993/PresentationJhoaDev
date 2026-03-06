@@ -14,8 +14,13 @@ const AdminSettings = () => {
         e.preventDefault();
         setMessage(null);
 
-        if (newPassword.length < 8) {
-            setMessage({ type: 'error', text: 'La contraseña debe tener al menos 8 caracteres.' });
+        if (newPassword.length < 9) {
+            setMessage({ type: 'error', text: 'La contraseña debe tener al menos 9 caracteres.' });
+            return;
+        }
+
+        if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword)) {
+            setMessage({ type: 'error', text: 'La contraseña debe incluir al menos una letra mayúscula y una minúscula.' });
             return;
         }
 
@@ -86,7 +91,7 @@ const AdminSettings = () => {
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            placeholder="Mínimo 8 caracteres"
+                            placeholder="Mín. 9 caracteres, mayúscula y minúscula"
                             required
                         />
 
