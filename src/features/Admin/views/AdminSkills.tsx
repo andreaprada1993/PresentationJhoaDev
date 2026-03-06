@@ -44,15 +44,7 @@ const AdminSkills = () => {
 
         try {
             if (editIndex !== null) {
-                // If it has an ID, update it. If it's mock data without an ID, we must add it instead.
-                const hasId = skills[editIndex].id;
-                if (hasId) {
-                    await updateSkill(editIndex, skillData);
-                } else {
-                    // It's a mock skill from the initial state, let's "save" it for real
-                    await addSkill(skillData);
-                    // Optionally, we could remove the mock one, but reloading state will handle it
-                }
+                await updateSkill(editIndex, skillData);
             } else {
                 await addSkill(skillData);
             }
@@ -163,7 +155,7 @@ const AdminSkills = () => {
                                     max="100"
                                     value={level}
                                     onChange={(e) => setLevel(Number(e.target.value))}
-                                    className="w-full accent-accent-primary bg-white/10 rounded-lg appearance-none h-2.5 cursor-pointer outline-none focus:ring-2 focus:ring-accent-primary/50"
+                                    className="w-full accent-accent-primary cursor-pointer outline-none"
                                 />
                                 <div className="flex justify-between text-xs text-text-tertiary mt-2">
                                     <span>Básico</span>

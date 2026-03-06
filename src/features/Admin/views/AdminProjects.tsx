@@ -60,13 +60,7 @@ const AdminProjects = () => {
 
         try {
             if (editIndex !== null) {
-                const hasId = projects[editIndex].id;
-                if (hasId) {
-                    await updateProject(editIndex, newProject);
-                } else {
-                    // Mock data, let's create it for real
-                    await addProject(newProject);
-                }
+                await updateProject(editIndex, newProject);
             } else {
                 await addProject(newProject);
             }

@@ -159,6 +159,22 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
 
     const addProject = async (project: IProject) => {
         try {
+            const hasDbProjects = state.projects.some(p => p.id);
+            if (!hasDbProjects && state.projects.length > 0) {
+                const newProjectsToInsert = state.projects.map(p => ({
+                    title: p.title, description: p.description, imageurl: p.image,
+                    tags: p.tags, live_url: p.liveUrl, github_url: p.githubUrl
+                }));
+                newProjectsToInsert.push({
+                    title: project.title, description: project.description, imageurl: project.image,
+                    tags: project.tags, live_url: project.liveUrl, github_url: project.githubUrl
+                });
+                const { error } = await supabase.from('projects').insert(newProjectsToInsert);
+                if (error) throw error;
+                await fetchData();
+                return;
+            }
+
             const { error } = await supabase.from('projects').insert([{
                 title: project.title,
                 description: project.description,
@@ -179,13 +195,20 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
         try {
             const projectToUpdate = state.projects[index];
             if (!projectToUpdate?.id) {
-                // fallback to local if id doesn't exist
-                setState(prev => {
-                    const newProjects = [...prev.projects];
-                    newProjects[index] = updatedProject;
-                    return { ...prev, projects: newProjects };
-                });
-                return;
+                const hasDbProjects = state.projects.some(p => p.id);
+                if (!hasDbProjects && state.projects.length > 0) {
+                    const newProjectsToInsert = state.projects.map((p, i) => {
+                        const proj = i === index ? updatedProject : p;
+                        return {
+                            title: proj.title, description: proj.description, imageurl: proj.image,
+                            tags: proj.tags, live_url: proj.liveUrl, github_url: proj.githubUrl
+                        };
+                    });
+                    const { error } = await supabase.from('projects').insert(newProjectsToInsert);
+                    if (error) throw error;
+                    await fetchData();
+                    return;
+                }
             }
 
             const { error } = await supabase.from('projects').update({
@@ -229,6 +252,16 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
 
     const addSkill = async (skill: ISkill) => {
         try {
+            const hasDbSkills = state.skills.some(s => s.id);
+            if (!hasDbSkills && state.skills.length > 0) {
+                const newSkillsToInsert = state.skills.map(s => ({ name: s.name, category: String(s.level) }));
+                newSkillsToInsert.push({ name: skill.name, category: String(skill.level) });
+                const { error } = await supabase.from('skills').insert(newSkillsToInsert);
+                if (error) throw error;
+                await fetchData();
+                return;
+            }
+
             const { error } = await supabase.from('skills').insert([{
                 name: skill.name,
                 category: String(skill.level)
@@ -244,7 +277,19 @@ export const PortfolioProvider = ({ children }: { children: ReactNode }) => {
     const updateSkill = async (index: number, updatedSkill: ISkill) => {
         try {
             const skillToUpdate = state.skills[index];
-            if (!skillToUpdate?.id) return;
+            if (!skillToUpdate?.id) {
+                const hasDbSkills = state.skills.some(s => s.id);
+                if (!hasDbSkills && state.skills.length > 0) {
+                    const newSkillsToInsert = state.skills.map((s, i) => {
+                        if (i === index) return { name: updatedSkill.name, category: String(updatedSkill.level) };
+                        return { name: s.name, category: String(s.level) };
+                    });
+                    const { error } = await supabase.from('skills').insert(newSkillsToInsert);
+                    if (error) throw error;
+                    await fetchData();
+                    return;
+                }
+            }
 
             const { error } = await supabase.from('skills').update({
                 name: updatedSkill.name,
