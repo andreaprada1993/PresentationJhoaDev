@@ -60,7 +60,13 @@ const AdminProjects = () => {
 
         try {
             if (editIndex !== null) {
-                await updateProject(editIndex, newProject);
+                const hasId = projects[editIndex].id;
+                if (hasId) {
+                    await updateProject(editIndex, newProject);
+                } else {
+                    // Mock data, let's create it for real
+                    await addProject(newProject);
+                }
             } else {
                 await addProject(newProject);
             }
@@ -82,77 +88,8 @@ const AdminProjects = () => {
         }
     };
 
-    if (isEditing) {
-        return (
-            <div className="glass-panel p-8 animate-fade-in">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-heading font-semibold text-text-primary">
-                        {editIndex !== null ? 'Editar Proyecto' : 'Nuevo Proyecto'}
-                    </h2>
-                    <button onClick={closeForm} className="text-text-secondary hover:text-white transition-colors">
-                        <X size={24} />
-                    </button>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <AdminInput
-                        label="Título del Proyecto"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="E.g. E-Commerce Microservices"
-                    />
-
-                    <AdminTextarea
-                        label="Descripción"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={3}
-                    />
-
-                    <AdminInput
-                        label="URL de la Imagen"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}
-                        placeholder="https://..."
-                    />
-
-                    <AdminInput
-                        label="Etiquetas (separadas por coma)"
-                        value={tags}
-                        onChange={(e) => setTags(e.target.value)}
-                        placeholder="React, Node.js, MongoDB"
-                    />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <AdminInput
-                            label="URL en Vivo"
-                            value={liveUrl}
-                            onChange={(e) => setLiveUrl(e.target.value)}
-                            placeholder="https://..."
-                        />
-                        <AdminInput
-                            label="URL de GitHub"
-                            value={githubUrl}
-                            onChange={(e) => setGithubUrl(e.target.value)}
-                            placeholder="https://github.com/..."
-                        />
-                    </div>
-
-                    <div className="pt-4 flex justify-end gap-3">
-                        <button type="button" onClick={closeForm} className="btn bg-white/5 text-text-primary hover:bg-white/10">
-                            Cancelar
-                        </button>
-                        <button type="submit" className="btn btn-primary flex items-center gap-2">
-                            Guardar Proyecto <Save size={18} />
-                        </button>
-                    </div>
-                </form>
-            </div>
-        );
-    }
-
     return (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6 animate-fade-in relative hidden-scrollbar">
             <Link to="/admin/dashboard" className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-primary transition-colors">
                 <ArrowLeft size={18} /> Regresar al Dashboard
             </Link>
@@ -184,13 +121,15 @@ const AdminProjects = () => {
                         <div className="flex md:flex-col gap-2 w-full md:w-auto mt-4 md:mt-0">
                             <button
                                 onClick={() => openEditForm(idx)}
-                                className="flex-1 md:flex-none btn bg-white/5 border border-white/10 text-text-primary hover:bg-accent-primary hover:border-accent-primary py-2 px-4 flex justify-center items-center"
+                                className="flex-1 md:flex-none p-2 rounded-lg bg-white/5 text-text-secondary hover:text-accent-primary hover:bg-white/10 transition-colors flex justify-center items-center"
+                                title="Editar Proyecto"
                             >
                                 <Edit2 size={16} />
                             </button>
                             <button
                                 onClick={() => handleDelete(idx)}
-                                className="flex-1 md:flex-none btn bg-white/5 border border-white/10 text-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 py-2 px-4 flex justify-center items-center"
+                                className="flex-1 md:flex-none p-2 rounded-lg bg-white/5 text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors flex justify-center items-center"
+                                title="Eliminar Proyecto"
                             >
                                 <Trash2 size={16} />
                             </button>
@@ -207,6 +146,76 @@ const AdminProjects = () => {
                     </div>
                 )}
             </div>
+
+            {/* Modal de Edición */}
+            {isEditing && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+                    <div className="bg-bg-primary border border-glass-border w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden animate-slide-up my-auto">
+                        <div className="flex justify-between items-center p-6 border-b border-glass-border bg-bg-secondary/50">
+                            <h2 className="text-xl font-heading font-semibold text-text-primary">
+                                {editIndex !== null ? 'Editar Proyecto' : 'Nuevo Proyecto'}
+                            </h2>
+                            <button onClick={closeForm} className="text-text-secondary hover:text-white transition-colors p-1 rounded-md hover:bg-white/10">
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                            <AdminInput
+                                label="Título del Proyecto"
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="E.g. E-Commerce Microservices"
+                            />
+
+                            <AdminTextarea
+                                label="Descripción"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                rows={3}
+                            />
+
+                            <AdminInput
+                                label="URL de la Imagen"
+                                value={image}
+                                onChange={(e) => setImage(e.target.value)}
+                                placeholder="https://..."
+                            />
+
+                            <AdminInput
+                                label="Etiquetas (separadas por coma)"
+                                value={tags}
+                                onChange={(e) => setTags(e.target.value)}
+                                placeholder="React, Node.js, MongoDB"
+                            />
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <AdminInput
+                                    label="URL en Vivo"
+                                    value={liveUrl}
+                                    onChange={(e) => setLiveUrl(e.target.value)}
+                                    placeholder="https://..."
+                                />
+                                <AdminInput
+                                    label="URL de GitHub"
+                                    value={githubUrl}
+                                    onChange={(e) => setGithubUrl(e.target.value)}
+                                    placeholder="https://github.com/..."
+                                />
+                            </div>
+
+                            <div className="pt-6 flex justify-end gap-3 border-t border-glass-border mt-4">
+                                <button type="button" onClick={closeForm} className="px-4 py-2 rounded-lg font-medium text-text-secondary hover:bg-white/5 hover:text-white transition-colors">
+                                    Cancelar
+                                </button>
+                                <button type="submit" className="btn btn-primary flex items-center gap-2 py-2">
+                                    Guardar Proyecto <Save size={18} />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
