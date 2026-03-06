@@ -4,12 +4,16 @@ import { ISkill } from '../../../types';
 import { AdminInput } from '../components/FormElements';
 import { Save, Plus, Trash2, Edit2, X, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 const AdminSkills = () => {
     const { skills, addSkill, updateSkill, deleteSkill } = usePortfolio();
 
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState<number | null>(null);
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<number | null>(null);
 
     // Form state
     const [name, setName] = useState('');
@@ -56,15 +60,20 @@ const AdminSkills = () => {
         }
     };
 
-    const handleDelete = async (index: number) => {
-        if (window.confirm('¿Estás seguro de que quieres eliminar esta habilidad?')) {
+    const triggerDelete = (index: number) => {
+        setItemToDelete(index);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (itemToDelete !== null) {
             try {
-                // If it doesn't have an ID, it's mock data, we can't really delete it from DB
-                // but we call deleteSkill so the Context can remove it locally
-                await deleteSkill(index);
+                await deleteSkill(itemToDelete);
             } catch (e: any) {
                 alert('Hubo un error: ' + (e.message || 'No se pudo eliminar la habilidad.'));
             }
+            setItemToDelete(null);
+            setIsDeleteModalOpen(false);
         }
     };
 
@@ -101,7 +110,7 @@ const AdminSkills = () => {
                                 <Edit2 size={16} />
                             </button>
                             <button
-                                onClick={() => handleDelete(idx)}
+                                onClick={() => triggerDelete(idx)}
                                 className="p-2 rounded-lg bg-white/5 text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                             >
                                 <Trash2 size={16} />
@@ -122,7 +131,7 @@ const AdminSkills = () => {
 
             {/* Modal de Edición */}
             {isEditing && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
                     <div className="bg-bg-primary border border-glass-border w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-slide-up">
                         <div className="flex justify-between items-center p-6 border-b border-glass-border bg-bg-secondary/50">
                             <h2 className="text-xl font-heading font-semibold text-text-primary">
@@ -177,6 +186,17 @@ const AdminSkills = () => {
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={isDeleteModalOpen}
+                title="Eliminar Habilidad"
+                message="¿Estás seguro de que deseas eliminar esta habilidad? Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                onCancel={() => {
+                    setIsDeleteModalOpen(false);
+                    setItemToDelete(null);
+                }}
+            />
         </div>
     );
 };

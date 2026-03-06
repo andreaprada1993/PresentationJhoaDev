@@ -27,14 +27,19 @@ const Login = () => {
             const dbPassword = data?.value;
             const envPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
-            if (password === dbPassword || password === envPassword) {
+            const isAuthorized = dbPassword
+                ? (password === dbPassword)
+                : (password === envPassword);
+
+            if (isAuthorized) {
                 login();
                 navigate('/admin/dashboard');
             } else {
                 setError('Contraseña incorrecta');
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error("Login Error", e);
+            // On hard network error, allow ENV fallback if no DB could be reached
             if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
                 login();
                 navigate('/admin/dashboard');

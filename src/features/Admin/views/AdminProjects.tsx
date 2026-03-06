@@ -4,12 +4,16 @@ import { IProject } from '../../../types';
 import { AdminInput, AdminTextarea } from '../components/FormElements';
 import { Save, Plus, Trash2, Edit2, X, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ConfirmModal } from '../components/ConfirmModal';
 
 const AdminProjects = () => {
     const { projects, addProject, updateProject, deleteProject } = usePortfolio();
 
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState<number | null>(null);
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [itemToDelete, setItemToDelete] = useState<number | null>(null);
 
     // Form state
     const [title, setTitle] = useState('');
@@ -72,13 +76,20 @@ const AdminProjects = () => {
         }
     };
 
-    const handleDelete = async (index: number) => {
-        if (window.confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
+    const triggerDelete = (index: number) => {
+        setItemToDelete(index);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        if (itemToDelete !== null) {
             try {
-                await deleteProject(index);
+                await deleteProject(itemToDelete);
             } catch (e: any) {
                 alert('Hubo un error: ' + (e.message || 'No se pudo eliminar el proyecto.'));
             }
+            setItemToDelete(null);
+            setIsDeleteModalOpen(false);
         }
     };
 
@@ -121,7 +132,7 @@ const AdminProjects = () => {
                                 <Edit2 size={16} />
                             </button>
                             <button
-                                onClick={() => handleDelete(idx)}
+                                onClick={() => triggerDelete(idx)}
                                 className="flex-1 md:flex-none p-2 rounded-lg bg-white/5 text-red-400/70 hover:text-red-400 hover:bg-red-500/10 transition-colors flex justify-center items-center"
                                 title="Eliminar Proyecto"
                             >
@@ -143,7 +154,7 @@ const AdminProjects = () => {
 
             {/* Modal de Edición */}
             {isEditing && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
                     <div className="bg-bg-primary border border-glass-border w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden animate-slide-up my-auto">
                         <div className="flex justify-between items-center p-6 border-b border-glass-border bg-bg-secondary/50">
                             <h2 className="text-xl font-heading font-semibold text-text-primary">
@@ -210,6 +221,17 @@ const AdminProjects = () => {
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={isDeleteModalOpen}
+                title="Eliminar Proyecto"
+                message="¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer."
+                onConfirm={confirmDelete}
+                onCancel={() => {
+                    setIsDeleteModalOpen(false);
+                    setItemToDelete(null);
+                }}
+            />
         </div>
     );
 };
