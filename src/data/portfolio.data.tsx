@@ -15,7 +15,7 @@ export const HERO_STATS: IHeroStats[] = [
     },
     {
         title: 'Frontend Seguros',
-        description: 'React, TypeScript Estricto, UI Moderna'
+        description: 'React, TypeScript, UI Moderna'
     }
 ];
 
